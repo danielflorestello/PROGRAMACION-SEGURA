@@ -1,0 +1,27 @@
+
+.formulario{
+padding: 40px;
+margin: auto;
+margin-top: 20px;
+width: 300px;
+height: 340px;
+border: 1px solid darkgray;
+box-shadow: 0 0 20px 1px rgba(0,0,0,0.3);
+border-radius: 10px;
+
+}
+
+.derecha{
+        border-left: 3px solid gray;
+        text-align: center;
+	margin-top: 5px;
+	width: 450px;
+	height: 400px;
+
+}
+::-webkit-scrollbar{
+    width: 0;
+}
+
+
+
