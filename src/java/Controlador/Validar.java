@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class Validar extends HttpServlet {
     
@@ -29,23 +30,40 @@ public class Validar extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        HttpSession session = null;
         String accion = request.getParameter("accion");
-
+        String mensaje = null;
+        int intentos = 0;
+        
         if (accion.equalsIgnoreCase("Ingresar")) {
-            String user = request.getParameter("txtuser");
-            String pass = request.getParameter("txtpass");
-            em = edao.validar(user, pass);
+            String usuario = request.getParameter("txtuser");
+            String clave = request.getParameter("txtpass");
+            em = edao.validar(usuario, clave);
+                
+            if (usuario.equals(em.getUsuario()) & clave.equals(em.getClave())) {
 
-            if (em.getUser() != null) {
-                request.setAttribute("usuario", em);
+                if (em.getNombreRol().equals("Administrador")) {
+                    session = request.getSession();
+                    session.setAttribute("usuario", em);
+                    request.getRequestDispatcher("Controlador?menu=Administrador").forward(request, response);
 
-                request.getRequestDispatcher("Controlador?menu=Principal").forward(request, response);
+                } else if (em.getNombreRol().equals("Empleado")) {
+                    session = request.getSession();
+                    session.setAttribute("usuario", em);
+                    request.getRequestDispatcher("Controlador?menu=Empleado").forward(request, response);
+                }
 
             } else {
+                mensaje = "!Las credenciales no son correctas¡";
+                request.setAttribute("mensaje", mensaje);
                 request.getRequestDispatcher("index.jsp").forward(request, response);
+                
             }
-
+            
         } else {
+            session = request.getSession();
+            session.setAttribute("usuario", null);
+            session.invalidate();
             request.getRequestDispatcher("index.jsp").forward(request, response);
         }
     }

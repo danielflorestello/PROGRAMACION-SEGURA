@@ -11,10 +11,11 @@ public class Conexion {
         
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto_ventas","root","");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ventas_polleria","root","");
             System.out.println("Conexion exitoso");
+            
         } catch (ClassNotFoundException | SQLException e) {
-            System.out.println("EEROR"+e);
+            System.out.println("ERROR " +e);
         }
         return con;
     }

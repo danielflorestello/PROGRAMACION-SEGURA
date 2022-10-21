@@ -15,34 +15,43 @@ public class EmpleadoDAO {
     ResultSet rs;
     int r;
     
-    public Empleado validar(String user, String dni) {
+    public Empleado validar(String usuario, String clave) {
         Empleado em = new Empleado();
-        String sql = "select * from empleado where User=? and Dni=?";
+        String sql = "select E.IdEmpleado, E.Nombre, E.Apellido, E.Dni, E.Telefono, E.Usuario, E.Clave, "
+                + "E.IdRol, R.NombreRol from empleado E "
+                + "inner join rol R on R.IdRol = E.IdRol "
+                + "where Usuario=? and Clave=?";
         
         try {
             con = cn.Conexion();
             ps = con.prepareStatement(sql);
-            ps.setString(1, user);
-            ps.setString(2, dni);
+            ps.setString(1, usuario);
+            ps.setString(2, clave);
             rs = ps.executeQuery();
             
             while (rs.next()) {
-                em.setId(rs.getInt("IdEmpleado"));
-                em.setUser(rs.getString("User"));
-                em.setDni(rs.getString("Dni"));
-                em.setNom(rs.getString("Nombres"));
-                em.setApe(rs.getString("Apellidos"));
+                em.setIdEmpleado(rs.getInt(1));
+                em.setNombre(rs.getString(2));
+                em.setApellido(rs.getString(3));
+                em.setDni(rs.getInt(4));
+                em.setTelefono(rs.getInt(5));
+                em.setUsuario(rs.getString(6));
+                em.setClave(rs.getString(7));
+                em.setIdRol(rs.getInt(8));
+                em.setNombreRol(rs.getString(9));
             }
             
         } catch (SQLException e) {
-            
+            System.out.println("Error: " + e.getMessage());
         }
         return em;
     }
 
     //OPERACIONES PARA EL SISTEMA
     public List listar() {
-        String sql = "select * from empleado";
+        String sql = "select E.IdEmpleado, E.Nombre, E.Apellido, E.Dni, E.Telefono, E.Usuario, E.Clave, "
+                + "E.IdRol, R.NombreRol from empleado E "
+                + "inner join rol R on R.IdRol = E.IdRol";
         List<Empleado> lista = new ArrayList<>();
         
         try {
@@ -52,12 +61,15 @@ public class EmpleadoDAO {
             
             while (rs.next()) {
                 Empleado em = new Empleado();
-                em.setId(rs.getInt(1));
-                em.setDni(rs.getString(2));
-                em.setNom(rs.getString(3));
-                em.setApe(rs.getString(4));
-                em.setTel(rs.getString(5));
-                em.setUser(rs.getString(6));
+                em.setIdEmpleado(rs.getInt(1));
+                em.setNombre(rs.getString(2));
+                em.setApellido(rs.getString(3));
+                em.setDni(rs.getInt(4));
+                em.setTelefono(rs.getInt(5));
+                em.setUsuario(rs.getString(6));
+                em.setClave(rs.getString(7));
+                em.setIdRol(rs.getInt(8));
+                em.setNombreRol(rs.getString(9));
                 lista.add(em);
             }
             
@@ -67,7 +79,7 @@ public class EmpleadoDAO {
         return lista;
     }
 
-    public int agregar(Empleado em) {
+    /*public int agregar(Empleado em) {
         String sql = "insert into empleado (Dni,Nombres,Apellidos,Telefono,User) values(?,?,?,?,?)";
         
         try {
@@ -141,5 +153,5 @@ public class EmpleadoDAO {
         } catch (SQLException e) {
             
         }
-    }
+    }*/
 }

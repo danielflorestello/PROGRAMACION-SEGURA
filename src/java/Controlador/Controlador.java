@@ -46,13 +46,17 @@ public class Controlador extends HttpServlet {
         
         String menu = request.getParameter("menu");
         String accion = request.getParameter("accion");
+        String error = "Error";
         
-        if (menu.equals("Principal")) {
+        if (menu.equals("Administrador")) {
+            request.getRequestDispatcher("Administrador/Principal_Admin.jsp").forward(request, response);
+            
+        } else if (menu.equals("Empleado")) {
             request.getRequestDispatcher("Principal.jsp").forward(request, response);
         }
-
+        
         //MENU EMPLEADO---------------------------------------------------------------------      
-        if (menu.equals("Empleado")) {
+        /*if (menu.equals("Empleado")) {
             switch (accion) {
                 case "Listar":
                     List lista = edao.listar();
@@ -322,7 +326,7 @@ public class Controlador extends HttpServlet {
                     request.getRequestDispatcher("RegistrarVentas.jsp").forward(request, response);
             }
             request.getRequestDispatcher("RegistrarVentas.jsp").forward(request, response);
-        }
+        }*/
     }
 
     @Override

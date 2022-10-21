@@ -22,7 +22,7 @@
                  top: 30%;
                  box-shadow: 0 0 50px 10px rgba(0,0,0,0.3);" class="Ventana-cerrar" id="ventana">
 
-                <h3> ${usuario.getNom()}, ¿seguro que quiere cerrar sesion?</h3>
+                <h3> ${usuario.getNombre()}, ¿seguro que quiere cerrar sesion?</h3>
                 <button name="accion" value="Salir" href="#" class=" btn btn-success  btn-lg">SI</button>
                 <button class=" btn btn-danger  btn-lg"><a style="color: white;text-decoration: none;" href="javascript:cerrarr()">No</a></button>
             </div>
@@ -75,7 +75,7 @@
         </nav>
                 
         <div class="container mt-10" >
-            <h1>Bienvenido, <strong>${usuario.getNom()}</strong> <strong>${usuario.getApe()}</strong></h1>
+            <h1>Bienvenido, <strong>${usuario.getNombre()}</strong> <strong>${usuario.getApellido()}</strong></h1>
         </div>
         
         <div class="m-2" style=" height: 500px;">
@@ -90,6 +90,10 @@
             function cerrarr() {
                 document.getElementById("ventana").style.display = "none";
             }
+        </script>
+        
+        <script>
+            window.history.forward();
         </script>
         
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
