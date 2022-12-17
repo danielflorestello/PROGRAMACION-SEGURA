@@ -6,6 +6,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <title>JSP Page</title>
+        <script src="js/jquery-3.1.1.min.js"></script>
     </head>
     
     <body>
@@ -32,16 +33,16 @@
                         <c:forEach var="em" items="${empleados}">
                             <tr>
                                 <td>
-                                    <a class="btn btn-danger"  href="Controlador?menu=Empleado&accion=Eliminar&id=${em.getId()}">X</a>
-                                    <a class="btn btn-dark" href="Controlador?menu=Empleado&accion=Editar&id=${em.getId()}">Editar</a>      
+                                    <a class="btn btn-danger"  href="Controlador?menu=Empleado&accion=Eliminar&id=${em.getIdEmpleado()}">X</a>
+                                    <a class="btn btn-dark" href="Controlador?menu=Empleado&accion=Editar&id=${em.getIdEmpleado()}">Editar</a>      
                                 </td>
 
-                                <td>${em.getId()}</td>
+                                <td>${em.getIdEmpleado()}</td>
                                 <td>${em.getDni()}</td>
-                                <td>${em.getNom()}</td>
-                                <td>${em.getApe()}</td>
-                                <td>${em.getTel()}</td>
-                                <td>${em.getUser()}</td>
+                                <td>${em.getNombre()}</td>
+                                <td>${em.getApellido()}</td>
+                                <td>${em.getTelefono()}</td>
+                                <td>${em.getUsuario()}</td>
                             </tr>
                         </c:forEach>
                     </tbody>
@@ -54,28 +55,28 @@
                         <div class="formulario" style="border-radius: 50px">
                             <h2 class="text-center">Editar Empleado</h2>
                             
-                            <form  action="Controlador?menu=Empleado" method="POST">
+                            <form name="form">
                                 <div class="form-group">
-                                    <input type="text" value="${empleado.getDni()}" name="txtDni" placeholder="Dni" class="form-control">
+                                    <input id="dni" type="text" value="${empleado.getDni()}" name="txtDni" placeholder="Dni" class="form-control">
                                 </div>
                                 
                                 <div class="form-group">
-                                    <input type="text" value="${empleado.getNom()}" name="txtNombres" placeholder="Nombre"class="form-control">
+                                    <input id="nombre" type="text" value="${empleado.getNombre()}" name="txtNombres" placeholder="Nombre"class="form-control">
                                 </div>
                                 
                                 <div class="form-group">
-                                    <input type="text"  value="${empleado.getApe()}"name="txtApellidos" placeholder="Apellido" class="form-control">
+                                    <input id="apellido" type="text"  value="${empleado.getApellido()}"name="txtApellidos" placeholder="Apellido" class="form-control">
                                 </div>
                                 
                                 <div class="form-group">
-                                    <input type="text" value="${empleado.getTel()}" name="txtTelefono" placeholder="Telefono"class="form-control">
+                                    <input id="telefono" type="text" value="${empleado.getTelefono()}" name="txtTelefono" placeholder="Telefono"class="form-control">
                                 </div>
                                 
                                 <div class="form-group">
-                                    <input type="text" value="${empleado.getUser()}" name= "txtUsuario" placeholder="Usuario" class="form-control">
+                                    <input id="usuario" type="text" value="${empleado.getUsuario()}" name= "txtUsuario" placeholder="Usuario" class="form-control">
                                 </div>
                                 
-                                <input type="submit" name="accion" value="Actualizar" class="btn btn-success">
+                                <input id="actualizarEmpleado" type="button" value="Actualizar" class="btn btn-success">
                             </form>
                         </div>
                     </div>  
@@ -83,6 +84,7 @@
             </div>           
         </div>
                                 
+        <script src="js/acciones.js" type="text/javascript"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

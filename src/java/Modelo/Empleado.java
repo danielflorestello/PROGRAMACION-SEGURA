@@ -4,26 +4,14 @@ public class Empleado {
     int idEmpleado;
     String nombre;
     String apellido;
-    int dni;
-    int telefono;
+    String dni;
+    String telefono;
     String usuario;
     String clave;
     int idRol;
     String nombreRol;
 
     public Empleado() {
-    }
-
-    public Empleado(int idEmpleado, String nombre, String apellido, int dni, int telefono, String usuario, String clave, int idRol, String nombreRol) {
-        this.idEmpleado = idEmpleado;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.dni = dni;
-        this.telefono = telefono;
-        this.usuario = usuario;
-        this.clave = clave;
-        this.idRol = idRol;
-        this.nombreRol = nombreRol;
     }
 
     public int getIdEmpleado() {
@@ -50,19 +38,19 @@ public class Empleado {
         this.apellido = apellido;
     }
 
-    public int getDni() {
+    public String getDni() {
         return dni;
     }
 
-    public void setDni(int dni) {
+    public void setDni(String dni) {
         this.dni = dni;
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 

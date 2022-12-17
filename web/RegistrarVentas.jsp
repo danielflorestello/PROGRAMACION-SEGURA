@@ -58,11 +58,11 @@
                                 </div>
                                 
                                 <div class="col-sm-3">
-                                    <input type="number" name="cant" value="1" placeholder="" class="form-control">
+                                    <input type="number" name="cant" value="1" min="1" placeholder="" class="form-control">
                                 </div>
                                 
                                 <div class="col-sm-3">
-                                    <input type="text" name="stock"  value="${producto.getStock()}"placeholder="cantidad" class="form-control">
+                                    <input type="text" name="stock"  value="${producto.getStock()}" placeholder="" class="form-control" readonly="">
                                 </div>
                             </div>
                                 

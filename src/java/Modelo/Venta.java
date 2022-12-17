@@ -5,6 +5,7 @@ public class Venta {
     int item;
     int idcliente;
     int idempleado;
+    //Empleado empleado = new Empleado();
     int  idproducto;
     String Numserie;
     String DescripcionP;

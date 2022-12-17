@@ -5,6 +5,7 @@ import Modelo.Cliente;
 import Modelo.ClienteDAO;
 import Modelo.Empleado;
 import Modelo.EmpleadoDAO;
+import Modelo.Encriptado;
 import Modelo.Producto;
 import Modelo.ProductoDAO;
 import Modelo.Venta;
@@ -26,6 +27,9 @@ public class Controlador extends HttpServlet {
 
     Producto p = new Producto();
     ProductoDAO pdao = new ProductoDAO();
+    
+    Encriptado enc = new Encriptado();
+    
     int ide, idc, idp;
 
     Venta v = new Venta();
@@ -46,71 +50,12 @@ public class Controlador extends HttpServlet {
         
         String menu = request.getParameter("menu");
         String accion = request.getParameter("accion");
-        String error = "Error";
         
-        if (menu.equals("Administrador")) {
-            request.getRequestDispatcher("Administrador/Principal_Admin.jsp").forward(request, response);
-            
-        } else if (menu.equals("Empleado")) {
+        if (menu.equals("Vendedor")) {
             request.getRequestDispatcher("Principal.jsp").forward(request, response);
-        }
-        
-        //MENU EMPLEADO---------------------------------------------------------------------      
-        /*if (menu.equals("Empleado")) {
-            switch (accion) {
-                case "Listar":
-                    List lista = edao.listar();
-                    request.setAttribute("empleados", lista);
-                    break;
-                    
-                case "Agregar":
-                    String dni = request.getParameter("txtDni");
-                    String nom = request.getParameter("txtNombres");
-                    String ape = request.getParameter("txtApellidos");
-                    String tel = request.getParameter("txtTelefono");
-                    String user = request.getParameter("txtUsuario");
-                    em.setDni(dni);
-                    em.setNom(nom);
-                    em.setApe(ape);
-                    em.setTel(tel);
-                    em.setUser(user);
-                    edao.agregar(em);
-                    request.getRequestDispatcher("Controlador?menu=Empleado&accion=Listar").forward(request, response);
-                    break;
-                                    
-                case "Editar":
-                    ide = Integer.parseInt(request.getParameter("id"));
-                    Empleado e = edao.listarId(ide);
-                    request.setAttribute("empleado", e);
-                    request.getRequestDispatcher("Controlador?menu=Empleado&accion=Listar").forward(request, response);
-                    break;
-                    
-                case "Actualizar":
-                    String dni1 = request.getParameter("txtDni");
-                    String nom1 = request.getParameter("txtNombres");
-                    String ape1 = request.getParameter("txtApellidos");
-                    String tel1 = request.getParameter("txtTelefono");
-                    String user1 = request.getParameter("txtUsuario");
-                    em.setDni(dni1);
-                    em.setNom(nom1);
-                    em.setApe(ape1);
-                    em.setTel(tel1);
-                    em.setUser(user1);
-                    em.setId(ide);
-                    edao.actualizar(em);
-                    request.getRequestDispatcher("Controlador?menu=Empleado&accion=Listar").forward(request, response);
-                    break;
-                    
-                case "Eliminar":
-                    ide = Integer.parseInt(request.getParameter("id"));
-                    edao.eliminar(ide);
-                    request.getRequestDispatcher("Controlador?menu=Empleado&accion=Listar").forward(request, response);
-                    break;
-
-                default:
-                    throw new AssertionError();
-            }
-            request.getRequestDispatcher("Empleado.jsp").forward(request, response);
+            
+        } else if (menu.equals("Administrador")) {
+            request.getRequestDispatcher("Administrador/Principal_Admin.jsp").forward(request, response);
         }
 
         //MENU CLIENTE ----------------------------------------------------------------------
@@ -172,9 +117,8 @@ public class Controlador extends HttpServlet {
                     String nom = request.getParameter("txtNombres");
                     String pre = request.getParameter("txtPre");
                     String stock = request.getParameter("txtStock");
-                    String estado = request.getParameter("txtEst");
                     p.setNom(nom);
-                    p.setPrec(Integer.parseInt(pre));
+                    p.setPrec(Double.parseDouble(pre));
                     p.setStock(Integer.parseInt(stock));
                     pdao.agregar(p);
                     request.getRequestDispatcher("Controlador?menu=Producto&accion=Listar").forward(request, response);
@@ -204,6 +148,95 @@ public class Controlador extends HttpServlet {
                     throw new AssertionError();
             }
             request.getRequestDispatcher("vista_producto.jsp").forward(request, response);
+        }
+        
+        //MENU EMPLEADO ----------------------------------------------------------------------
+        if (menu.equals("Empleado")) {
+            switch (accion) {
+                case "Listar":
+                    List lista = edao.listar();
+                    request.setAttribute("empleados", lista);
+                    break;
+
+                case "Agregar":
+                    String nombre = request.getParameter("txtNombres");
+                    String apellido = request.getParameter("txtApellidos");
+                    String dni = request.getParameter("txtDni");
+                    String tel = request.getParameter("txtTelefono");
+                    String usuario = request.getParameter("txtUsuario");
+                    String clave = Encriptado.getMD5(request.getParameter("txtClave"));
+                    int rol = 2;
+                    
+                    em = edao.validarRegistro(nombre, apellido);
+                    
+                    if (nombre.equals(em.getNombre()) & apellido.equals(em.getApellido())) {
+                        request.setAttribute("mensaje", "    <div style=\"text-align: center;\n"
+                            + "                background: white;\n"
+                            + "                display: block;\n"
+                            + "                width: 30%;\n"
+                            + "                padding: 33px;\n"
+                            + "                border-radius:10px;\n"
+                            + "                position: absolute;\n"
+                            + "                left: 35%;\n"
+                            + "                top: 30%;\n"
+                            + "                box-shadow: 0 0 50px 10px rgba(0,0,0,0.3);\" class=\"Ventana-cerrar\" id=\"ventana\">\n"
+                            + "		\n"
+                            + "                 <h3> ¡El empleado ya está registrado! </h3>\n"
+                            + "                 <button  class=\" btn btn-danger  btn-lg\"><a style=\"color: white;text-decoration: none;\" href=\"javascript:cerrarr()\">Ok</a></button>"
+                            + "<script>function abrir(){\n"
+                            + "				document.getElementById(\"ventana\").style.display=\"block\";\n"
+                            + "			}\n"
+                            + "			function cerrarr(){\n"
+                            + "				document.getElementById(\"ventana\").style.display=\"none\";\n"
+                            + "			}</script>");
+                    request.getRequestDispatcher("Controlador?menu=Agregar_empleado").forward(request, response);
+                    
+                    } else {
+                        em.setNombre(nombre);
+                        em.setApellido(apellido);
+                        em.setDni(dni);
+                        em.setTelefono(tel);
+                        em.setUsuario(usuario);
+                        em.setClave(clave);
+                        em.setIdRol(rol);
+                        edao.agregar(em);
+                        request.getRequestDispatcher("Controlador?menu=Empleado&accion=Listar").forward(request, response);
+                        break;
+                    }
+                                                        
+                case "Editar":
+                    ide = Integer.parseInt(request.getParameter("id"));
+                    Empleado e = edao.listarId(ide);
+                    request.setAttribute("empleado", e);
+                    request.getRequestDispatcher("Controlador?menu=Empleado&accion=Listar").forward(request, response);
+                    break;
+                    
+                case "Actualizar":
+                    String nom1 = request.getParameter("txtNombres");
+                    String ape1 = request.getParameter("txtApellidos");
+                    String dni1 = request.getParameter("txtDni");
+                    String tel1 = request.getParameter("txtTelefono");
+                    String user1 = request.getParameter("txtUsuario");
+                    em.setNombre(nom1);
+                    em.setApellido(ape1);
+                    em.setDni(dni1);
+                    em.setTelefono(tel1);
+                    em.setUsuario(user1);
+                    em.setIdEmpleado(ide);
+                    edao.actualizar(em);
+                    request.getRequestDispatcher("Controlador?menu=Empleado&accion=Listar").forward(request, response);
+                    break;
+                    
+                case "Eliminar":
+                    ide = Integer.parseInt(request.getParameter("id"));
+                    edao.eliminar(ide);
+                    request.getRequestDispatcher("Controlador?menu=Empleado&accion=Listar").forward(request, response);
+                    break;
+
+                default:
+                    throw new AssertionError();            
+            }
+            request.getRequestDispatcher("Empleado.jsp").forward(request, response);
         }
 
         //MENU AGREGAR EMPLEADO----------------------------------------------------------------
@@ -326,7 +359,7 @@ public class Controlador extends HttpServlet {
                     request.getRequestDispatcher("RegistrarVentas.jsp").forward(request, response);
             }
             request.getRequestDispatcher("RegistrarVentas.jsp").forward(request, response);
-        }*/
+        }
     }
 
     @Override

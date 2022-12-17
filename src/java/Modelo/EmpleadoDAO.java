@@ -33,8 +33,8 @@ public class EmpleadoDAO {
                 em.setIdEmpleado(rs.getInt(1));
                 em.setNombre(rs.getString(2));
                 em.setApellido(rs.getString(3));
-                em.setDni(rs.getInt(4));
-                em.setTelefono(rs.getInt(5));
+                em.setDni(rs.getString(4));
+                em.setTelefono(rs.getString(5));
                 em.setUsuario(rs.getString(6));
                 em.setClave(rs.getString(7));
                 em.setIdRol(rs.getInt(8));
@@ -64,8 +64,8 @@ public class EmpleadoDAO {
                 em.setIdEmpleado(rs.getInt(1));
                 em.setNombre(rs.getString(2));
                 em.setApellido(rs.getString(3));
-                em.setDni(rs.getInt(4));
-                em.setTelefono(rs.getInt(5));
+                em.setDni(rs.getString(4));
+                em.setTelefono(rs.getString(5));
                 em.setUsuario(rs.getString(6));
                 em.setClave(rs.getString(7));
                 em.setIdRol(rs.getInt(8));
@@ -79,17 +79,19 @@ public class EmpleadoDAO {
         return lista;
     }
 
-    /*public int agregar(Empleado em) {
-        String sql = "insert into empleado (Dni,Nombres,Apellidos,Telefono,User) values(?,?,?,?,?)";
+    public int agregar(Empleado em) {
+        String sql = "insert into empleado (Nombre,Apellido,Dni,Telefono,Usuario,Clave,IdRol) values(?,?,?,?,?,?,?)";
         
         try {
             con = cn.Conexion();
             ps = con.prepareStatement(sql);
-            ps.setString(1, em.getDni());
-            ps.setString(2, em.getNom());
-            ps.setString(3, em.getApe());
-            ps.setString(4, em.getTel());
-            ps.setString(5, em.getUser());
+            ps.setString(1, em.getNombre());
+            ps.setString(2, em.getApellido());
+            ps.setString(3, em.getDni());
+            ps.setString(4, em.getTelefono());
+            ps.setString(5, em.getUsuario());
+            ps.setString(6, em.getClave());
+            ps.setInt(7, em.getIdRol());
             ps.executeUpdate();
             
         } catch (SQLException e) {
@@ -108,12 +110,13 @@ public class EmpleadoDAO {
             rs = ps.executeQuery();
             
             while (rs.next()) {
-                emp.setDni(rs.getString(2));
-                emp.setNom(rs.getString(3));
-                emp.setApe(rs.getString(4));
-                emp.setTel(rs.getString(5));
-                emp.setUser(rs.getString(6));
-
+                emp.setNombre(rs.getString(2));
+                emp.setApellido(rs.getString(3));
+                emp.setDni(rs.getString(4));
+                emp.setTelefono(rs.getString(5));
+                emp.setUsuario(rs.getString(6));
+                emp.setClave(rs.getString(7));
+                emp.setIdRol(rs.getInt(8));
             }
             
         } catch (SQLException e) {
@@ -123,17 +126,17 @@ public class EmpleadoDAO {
     }
 
     public int actualizar(Empleado em) {
-        String sql = "update empleado set Dni=?,Nombres=?,Apellidos=?,Telefono=?,User=? where IdEmpleado=?";
+        String sql = "update empleado set Nombre=?,Apellido=?,Dni=?,Telefono=?,Usuario=? where IdEmpleado=?";
         
         try {
             con = cn.Conexion();
             ps = con.prepareStatement(sql);
-            ps.setString(1, em.getDni());
-            ps.setString(2, em.getNom());
-            ps.setString(3, em.getApe());
-            ps.setString(4, em.getTel());
-            ps.setString(5, em.getUser());
-            ps.setInt(6, em.getId());
+            ps.setString(1, em.getNombre());
+            ps.setString(2, em.getApellido());
+            ps.setString(3, em.getDni());
+            ps.setString(4, em.getTelefono());
+            ps.setString(5, em.getUsuario());
+            ps.setInt(6, em.getIdEmpleado());
             ps.executeUpdate();
             
         } catch (SQLException e) {
@@ -153,5 +156,37 @@ public class EmpleadoDAO {
         } catch (SQLException e) {
             
         }
-    }*/
+    }
+    
+    public Empleado validarRegistro(String nombre, String apellido) {
+        Empleado em = new Empleado();
+        String sql = "select E.IdEmpleado, E.Nombre, E.Apellido, E.Dni, E.Telefono, E.Usuario, E.Clave, "
+                + "E.IdRol, R.NombreRol from empleado E "
+                + "inner join rol R on R.IdRol = E.IdRol "
+                + "where Nombre=? and Apellido=?";
+        
+        try {
+            con = cn.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, nombre);
+            ps.setString(2, apellido);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                em.setIdEmpleado(rs.getInt(1));
+                em.setNombre(rs.getString(2));
+                em.setApellido(rs.getString(3));
+                em.setDni(rs.getString(4));
+                em.setTelefono(rs.getString(5));
+                em.setUsuario(rs.getString(6));
+                em.setClave(rs.getString(7));
+                em.setIdRol(rs.getInt(8));
+                em.setNombreRol(rs.getString(9));
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return em;
+    }
 }

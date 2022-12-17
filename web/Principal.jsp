@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -23,7 +24,7 @@
                  box-shadow: 0 0 50px 10px rgba(0,0,0,0.3);" class="Ventana-cerrar" id="ventana">
 
                 <h3> ${usuario.getNombre()}, ¿seguro que quiere cerrar sesion?</h3>
-                <button name="accion" value="Salir" href="#" class=" btn btn-success  btn-lg">SI</button>
+                <button name="accion" value="Salir" class=" btn btn-success  btn-lg">SI</button>
                 <button class=" btn btn-danger  btn-lg"><a style="color: white;text-decoration: none;" href="javascript:cerrarr()">No</a></button>
             </div>
         </form>
@@ -42,17 +43,6 @@
                     <a style=" border-radius: 5px;color: white;border: 2px solid white;"class="nav-link " href="Controlador?menu=NuevaVenta&accion=default" target="myFrame">Nueva Venta</a>
                 </ul>
             </div>
-            
-            <!-- PARA AGREGAR-->        
-            <div class="dropdown-container">
-                <span style="color: white; padding: 10px 20px 10px 20px;">Opciones</span>
-                <ul>
-                    <li>
-                        <a style="color: white"class="nav-link " href="Controlador?menu=Agregar_empleado" target="myFrame">Agregar Empleado</a>
-                    </li>
-                </ul>
-
-            </div>
 
             <!-- PARA INFORMACION-->
             <div class="dropdown-container">
@@ -61,8 +51,6 @@
                 <ul>
                     <li>
                         <a style="color: white"class="nav-link" class="dropdown-item"href="Controlador?menu=Producto&accion=Listar" target="myFrame">Producto</a>
-                        <div class="dropdown-divider"></div>
-                        <a style="color: white"class="nav-link" class="dropdown-item" href="Controlador?menu=Empleado&accion=Listar" target="myFrame">Empleado</a>
                         <div class="dropdown-divider"></div>
                         <a style="color: white"class="nav-link "class="dropdown-item" href="Controlador?menu=Cliente&accion=Listar" target="myFrame">Cliente</a>
                     </li>
@@ -92,9 +80,15 @@
             }
         </script>
         
-        <script>
-            window.history.forward();
-        </script>
+        <c:if test="${empty usuario}">
+            <script>
+                window.addEventListener("load",function(){
+                    location.href = "index.jsp";
+                });
+            </script>
+        </c:if>
+            
+        ${alerta}
         
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
